@@ -52,7 +52,7 @@ def read_score(file_path):
         return None
     
 def clean_previous_data():
-    with open("/home/robotmaster/experiments-loop-functions/data/score_cho-6s.txt", "w") as file:
+    with open("/home/robotmaster/experiments-loop-functions/data/score.txt", "w") as file:
         pass 
 
 
@@ -83,7 +83,7 @@ def plot_boxplots2(data, plot_title, number_plots, plots_ticks, yticks, ylim):
 def run_experiments(argos_file,score_file, mission_name, n_experiments):
     """Main function to automate the FSM testing process."""
 
-    with open("/home/robotmaster/experiments-loop-functions/data/missions.json", "r") as f:
+    with open("/home/robotmaster/experiments-loop-functions/data/grappa_fsm.json", "r") as f:
         fsm_configs = json.load(f)
 
     m = 0
@@ -110,17 +110,17 @@ def run_experiments(argos_file,score_file, mission_name, n_experiments):
 if __name__ == "__main__":
     score_dict = {}
     argos_file = "/home/robotmaster/experiments-loop-functions/scenarios/heterogeneity/aggregation.argos"
-    score_file = "/home/robotmaster/experiments-loop-functions/data/score_cho-6s.txt"
-    mission_names = ["cho-6s", "cho-hom", "grappa-het"]
-    n_experiments = 1
+    score_file = "/home/robotmaster/experiments-loop-functions/data/score.txt"
+    mission_names = ["Grappa-1g1s", "Grappa-2g1s", "Grappa-3g1s", "Grappa-4g1s", "Grappa-5g1s", "Grappa-6g1s"]
+    # mission_names = ["Tutti-1g1s", "Tutti-1g2s", "Tutti-1g3s", "Tutti-1g4s", "Tutti-1g5s", "Tutti-1g6s"]
+    n_experiments = 10
 
-    # for mission_name in mission_names:
-    #     score = run_experiments(argos_file, score_file, mission_name, n_experiments)
-    #     score_dict[mission_name] = score.reshape(10,n_experiments)
-    #     print(score_dict)
-    mission_name = "cho-hom"
-    score = run_experiments(argos_file, score_file, mission_name, n_experiments)
+    for mission_name in mission_names:
+        score = run_experiments(argos_file, score_file, mission_name, n_experiments)
+        score_dict[mission_name] = score.reshape(10,n_experiments)
+    # mission_name = "cho-hom"
+    # score = run_experiments(argos_file, score_file, mission_name, n_experiments)
 
     
-    # with open("/home/robotmaster/experiments-loop-functions/data/total_score.txt", "w") as f:
-    #     f.write(str(score_dict))   # write as JSON
+    with open("/home/robotmaster/experiments-loop-functions/data/total_score_grappa.txt", "w") as f:
+        f.write(str(score_dict))   # write as JSON
